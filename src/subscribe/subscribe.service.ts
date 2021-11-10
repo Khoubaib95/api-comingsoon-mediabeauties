@@ -1,7 +1,9 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { Subscribe, SubscribeDocument } from './schemas/subscribe.schema';
+import { ISubscribe } from './interface/subscribe.interface';
+import { Response } from 'express';
 
 @Injectable()
 export class SubscribeService {
@@ -10,14 +12,13 @@ export class SubscribeService {
     private subscribeModel: Model<SubscribeDocument>,
   ) {}
 
-  async sudscribe(data: { name: string; email: string }): Promise<Subscribe> {
-    const newSubscribe = new this.subscribeModel(data);
+  async subscribe(res: Response, data: ISubscribe): Promise<void> {
+    const createdSubscribe = new this.subscribeModel(data);
     try {
-      const createdSubscribe = await newSubscribe.save();
-      return createdSubscribe;
+      res.status(HttpStatus.CREATED).json(await createdSubscribe.save());
     } catch (error) {
       if (error?.code === 11000) {
-        return data;
+        res.status(HttpStatus.ACCEPTED).json(data);
       }
     }
   }
