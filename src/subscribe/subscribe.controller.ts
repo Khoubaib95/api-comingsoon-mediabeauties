@@ -4,7 +4,7 @@ import { SubscribeService } from './subscribe.service';
 import { SubscribeDocument } from './schemas/subscribe.schema';
 import { Response } from 'express';
 
-@Controller('api/subscribe')
+@Controller('subscribe')
 export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
 

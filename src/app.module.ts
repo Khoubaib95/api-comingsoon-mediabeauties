@@ -9,14 +9,13 @@ import { SubscribeModule } from './subscribe/subscribe.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    MongooseModule.forRoot(
-      'mongodb://localhost:27017/mediabeauties_comingsoon',
-    ),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client'),
+      rootPath: join(__dirname, '..', 'build'),
       exclude: ['/api*'],
     }),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.CLOUD_DB),
+
     SubscribeModule,
   ],
   controllers: [AppController],
